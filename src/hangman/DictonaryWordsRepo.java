@@ -6,11 +6,10 @@ import java.util.Random;
 import java.util.Scanner;
 import linked_data_structures.SinglyLinkedList;
 
-public class DictonaryWordsRepo {
+public class DictonaryWordsRepo implements java.io.Serializable {
 	private SinglyLinkedList<String> dictionaryWords = new SinglyLinkedList<String>();
 	
 	public DictonaryWordsRepo() {
-		// TODO Auto-generated constructor stub
 		readFile();
 	}
 	
@@ -62,7 +61,6 @@ public class DictonaryWordsRepo {
 			System.err.println("File not found");
 			return false;
 		} catch (EmptyFileException e) {
-			// TODO Auto-generated catch block
 			System.out.println(e);
 			System.exit(1);
 			return false;

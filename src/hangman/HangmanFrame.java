@@ -23,15 +23,20 @@ public class HangmanFrame extends JFrame {
 	private JPanel contentPane;
 	private JPanel welcomePanel;
 	private JPanel newGamePanel;
-	private int currentImg;
 	private final JLayeredPane layeredPane = new JLayeredPane();
+	
+	private static DictonaryWordsRepo words;
+	private static DictionaryWord word;
+	private static HangmanGame game;
+	
+	private int currentImg;
 
 	public void displayHangmanImage() {
 
 	}
 
 	public void changeHangmanImage() {
-
+		
 	}
 
 	public void displayGuessedLetters() {
@@ -43,16 +48,18 @@ public class HangmanFrame extends JFrame {
 	}
 
 	public void displayHint() {
-
+		
 	}
 
 	public static void main(String[] args) {
 
 //		HangmanFrame frame = new HangmanFrame();
 //		frame.setVisible(true);
-		DictonaryWordsRepo words = new DictonaryWordsRepo();
-		DictionaryWord word = new DictionaryWord(words.sendRandomWord());
+		SinglyLinkedList<Object> gameData = new SinglyLinkedList<Object>();
+		words = new DictonaryWordsRepo();
+		word = new DictionaryWord(words.sendRandomWord());
 		word.printLists();
+		game = new HangmanGame(word);
 	}
 
 	public HangmanFrame() {

@@ -52,7 +52,23 @@ public class Player {
 		this.gamesPlayed = gamesPlayed;
 	}
 	
-	public boolean checkName(String name) {
-		return false;
+	public void win() {
+		this.gamesPlayed++;
+		this.gamesWon++;
 	}
+	
+	public void loss() {
+		this.gamesPlayed++;
+		this.gamesWon++;
+	}
+	
+//	public boolean hasValidName() {
+//		int i = 0;
+//		while(i < playerName.length()) {
+//			if (!Character.isLetter(playerName.charAt(i))) return false;
+//			i++;
+//			
+//		}
+//		return true;
+//	}
 }

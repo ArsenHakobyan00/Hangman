@@ -10,8 +10,10 @@ public class HangmanGame extends HangmanFrame {
 		previousNames = new SinglyLinkedList<String>();
 	}
 	
-	public HangmanGame(String randomWord) {
-		
+	public HangmanGame(DictionaryWord randomWord) {
+		if (randomWord instanceof DictionaryWord && randomWord != null) { 
+			
+		}
 	}
 	
 	public String selectWord() {
@@ -26,12 +28,23 @@ public class HangmanGame extends HangmanFrame {
 		return false;
 	}
 	
-	public boolean saveGame() {
+	/*
+	 *  0 - words object
+	 *	1 - current word object
+	 *	2 - scoreboard
+	 *	3 - 
+	 */
+	public boolean saveGame(SinglyLinkedList<Object> gameData) {
+		
+		
+//		try {
+//			gameData
+//		}
 		return false;
 	}
 	
-	public boolean saveNewName() {
-		return false;
+	public void saveNewName(String newName) {
+		previousNames.add(newName);
 	}
 	
 	public boolean returnToMainMenu() {
@@ -44,13 +57,11 @@ public class HangmanGame extends HangmanFrame {
 	
 	@Override
 	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
 		return super.equals(obj);
 	}
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return super.toString();
 	}
 }
