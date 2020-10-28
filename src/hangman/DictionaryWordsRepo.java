@@ -2,14 +2,15 @@ package hangman;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.Random;
 import java.util.Scanner;
 import linked_data_structures.SinglyLinkedList;
 
-public class DictonaryWordsRepo implements java.io.Serializable {
+public class DictionaryWordsRepo implements Serializable {
 	private SinglyLinkedList<String> dictionaryWords = new SinglyLinkedList<String>();
 	
-	public DictonaryWordsRepo() {
+	public DictionaryWordsRepo() {
 		readFile();
 	}
 	

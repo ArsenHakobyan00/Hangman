@@ -15,6 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.awt.event.ActionEvent;
 
@@ -25,7 +26,7 @@ public class HangmanFrame extends JFrame {
 	private JPanel newGamePanel;
 	private final JLayeredPane layeredPane = new JLayeredPane();
 	
-	private static DictonaryWordsRepo words;
+	private static DictionaryWordsRepo words;
 	private static DictionaryWord word;
 	private static HangmanGame game;
 	
@@ -55,11 +56,28 @@ public class HangmanFrame extends JFrame {
 
 //		HangmanFrame frame = new HangmanFrame();
 //		frame.setVisible(true);
-		SinglyLinkedList<Object> gameData = new SinglyLinkedList<Object>();
-		words = new DictonaryWordsRepo();
+		
+		// if user clicks on save
+		SinglyLinkedList<Object>  gameData = new SinglyLinkedList<Object>();
+		words = new DictionaryWordsRepo();
+		
 		word = new DictionaryWord(words.sendRandomWord());
 		word.printLists();
 		game = new HangmanGame(word);
+		System.out.println("\n\n0 - "+words+"\n1 - "+word);
+		gameData.add(words);
+		gameData.add(word);
+		
+		System.out.println("\n\n0 - "+gameData.getElementAt(0)+"\n1 - "+gameData.getElementAt(1));
+		
+		game.saveGame(gameData);
+		
+		// If the user wants to load the game 
+		SinglyLinkedList<Object> savedData = game.resumeGame();
+		DictionaryWord savedWord = (DictionaryWord) savedData.getElementAt(0);
+		
+		savedWord.printLists();
+		
 	}
 
 	public HangmanFrame() {

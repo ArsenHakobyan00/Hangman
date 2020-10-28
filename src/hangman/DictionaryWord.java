@@ -1,13 +1,13 @@
 package hangman;
 
+import java.io.Serializable;
 import java.util.Random;
 import linked_data_structures.SinglyLinkedList;
 
-public class DictionaryWord implements java.io.Serializable {
+public class DictionaryWord implements Serializable {
 	private String solution;
 	private SinglyLinkedList<Character> guessedLetters;
 	private SinglyLinkedList<Character> solutionInLetters;
-	private final int WORD_LENGTH = solutionInLetters.getLength();
 	private SinglyLinkedList<Character> wrongGuesses;
 	private int numberOfMistakes;
 	
@@ -24,7 +24,6 @@ public class DictionaryWord implements java.io.Serializable {
 		guessedLetters = new SinglyLinkedList<Character>();
 		solutionInLetters = new SinglyLinkedList<Character>();
 		wrongGuesses = new SinglyLinkedList<Character>();
-		
 		toChars(solution);
 		hideSolution(solution);
 		
@@ -43,14 +42,15 @@ public class DictionaryWord implements java.io.Serializable {
 		return wrongGuesses;
 	}
 	
+	// Temporary
 	public void printLists() {
 		System.out.println("Guessed Letters: ");
-		for (int i = 0; i < WORD_LENGTH; i++) {
+		for (int i = 0; i < solutionInLetters.getLength(); i++) {
 			System.out.print(guessedLetters.getElementAt(i) + " ");
 		}
 		System.out.println("\n");
 		System.out.println("Solution In Letters");
-		for (int i = 0; i < WORD_LENGTH; i++) {
+		for (int i = 0; i < solutionInLetters.getLength(); i++) {
 			System.out.print(solutionInLetters.getElementAt(i) + " ");
 		}
 //		System.out.println("\n");
@@ -62,16 +62,16 @@ public class DictionaryWord implements java.io.Serializable {
 	}
 	
 	public boolean isGameOver() {
-		if (hasEmptySlots() == false && numberOfMistakes < 6) return true;
-		else if (hasEmptySlots() == true && numberOfMistakes == 6) return true;
+		if (hasEmptySlots() == false && numberOfMistakes < 6) 		return true;
+		else if (hasEmptySlots() == true && numberOfMistakes == 6)  return true;
 		else if (hasEmptySlots() == false && numberOfMistakes == 6) return true;
 		else return false;
 	}
 	
 	public boolean isWin() {
 		if (isGameOver() == true) {
-			if (hasEmptySlots() == false && numberOfMistakes < 6) return true;
-			else if (hasEmptySlots() == true && numberOfMistakes == 6) return false;
+			if (hasEmptySlots() == false && numberOfMistakes < 6) 	    return true;
+			else if (hasEmptySlots() == true && numberOfMistakes == 6)  return false;
 			else if (hasEmptySlots() == false && numberOfMistakes == 6) return false;
 			else return false;
 		}
@@ -83,7 +83,7 @@ public class DictionaryWord implements java.io.Serializable {
 			int i = 0;
 			int done = 0;
 			char current;
-			while(i < WORD_LENGTH) {
+			while(i < solutionInLetters.getLength()) {
 				current = solutionInLetters.getElementAt(i);
 				if (letter == current) {
 					guessedLetters.add(current, i);
@@ -102,7 +102,7 @@ public class DictionaryWord implements java.io.Serializable {
 	
 	public boolean hasEmptySlots() {
 		int i = 0;
-		while(i < WORD_LENGTH) {
+		while(i < solutionInLetters.getLength()) {
 			if (guessedLetters.getElementAt(i) == '_') {
 				return true;
 			}
@@ -116,7 +116,7 @@ public class DictionaryWord implements java.io.Serializable {
 				// Create a list with all the indices with '_'	
 				SinglyLinkedList<Integer> emptySlotIndices = new SinglyLinkedList<Integer>();
 				int i = 0;
-				while(i < WORD_LENGTH) {
+				while(i < solutionInLetters.getLength()) {
 					if (guessedLetters.getElementAt(i) == '_') {
 						emptySlotIndices.add(i);
 					}
