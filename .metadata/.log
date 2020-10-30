@@ -1,0 +1,18 @@
+!SESSION 2020-10-30 00:40:46.543 -----------------------------------------------
+eclipse.buildId=4.17.0.I20200902-1800
+java.version=14.0.1
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_CA
+Framework arguments:  -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product -keyring /Users/arsenhakobyan/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.java.product -data /Users/arsenhakobyan/OneDrive/Computer Science/Programming/Fall 2020/Assignments/ahakobyan_G30_A02_LinkedList -product org.eclipse.epp.package.java.product -keyring /Users/arsenhakobyan/.eclipse_keyring
+
+!ENTRY org.eclipse.ui 2 0 2020-10-30 00:40:53.301
+!MESSAGE Warnings while parsing the images from the 'org.eclipse.ui.commandImages' extension point.
+!SUBENTRY 1 org.eclipse.ui 2 0 2020-10-30 00:40:53.301
+!MESSAGE Cannot bind to an undefined command: plug-in='com.genuitec.eclipse.theming.ui', id='com.genuitec.myeclipse.help.darktheme.commandid'
+
+!ENTRY com.genuitec.eclipse.theming.ui 1 0 2020-10-30 00:40:54.932
+!MESSAGE A DevStyle Theme is being activated on this workspace; preparing colors and configuration
+
+!ENTRY com.genuitec.eclipse.theming.ui 1 0 2020-10-30 00:40:54.947
+!MESSAGE DevStyle has archived current color configurations to alternate preferences - will be restored when switching out of the DevStyle Theme

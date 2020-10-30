@@ -55,7 +55,9 @@ public class DictionaryWordsRepo implements Serializable {
 				}
 				dictionaryReader.close();
 			} else {
-				throw new EmptyFileException("The text file that contains all the words is empty... Please find the file at " + file.getAbsolutePath() + " and add some words in it");
+				throw new EmptyFileException(
+						"The text file that contains all the words is empty... Please find the file at "
+								+ file.getAbsolutePath() + " and add some words in it");
 			}
 			return true;
 		} catch (FileNotFoundException e) {

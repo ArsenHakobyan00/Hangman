@@ -1,18 +1,20 @@
 package hangman;
 
-public class Player {
+import java.io.Serializable;
+
+public class Player implements Serializable {
 	private String playerName;
 	private int gamesWon;
 	private int gamesLost;
 	private int gamesPlayed;
-	
+
 	public Player() {
 		setPlayerName("Unknown");
 		setGamesWon(0);
 		setGamesLost(0);
 		setGamesPlayed(0);
 	}
-	
+
 	public Player(String playerName) {
 		setPlayerName(playerName);
 		setGamesWon(0);
@@ -51,17 +53,17 @@ public class Player {
 	public void setGamesPlayed(int gamesPlayed) {
 		this.gamesPlayed = gamesPlayed;
 	}
-	
+
 	public void win() {
 		this.gamesPlayed++;
 		this.gamesWon++;
 	}
-	
+
 	public void loss() {
 		this.gamesPlayed++;
 		this.gamesWon++;
 	}
-	
+
 //	public boolean hasValidName() {
 //		int i = 0;
 //		while(i < playerName.length()) {

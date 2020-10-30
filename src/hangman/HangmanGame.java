@@ -5,34 +5,39 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 
 import linked_data_structures.SinglyLinkedList;
 
-public class HangmanGame extends HangmanFrame {
-	private SinglyLinkedList<String> previousNames;
+public class HangmanGame {
 
 	public HangmanGame() {
-		previousNames = new SinglyLinkedList<String>();
+//		previousNames[0] = "";
+//		previousNames.add()
 	}
 
 	public HangmanGame(DictionaryWord randomWord) {
 		if (randomWord instanceof DictionaryWord && randomWord != null) {
 //			newGame((DictionaryWord) randomWord))
-			// TODO Figure out what to do with this constructor
+			// TODO HangmanGame(word) constructor
 		}
 	}
 
 	public String selectWord() {
+		// TODO selectWord()
 		return null;
 	}
 
-	public boolean newGame() {
+	public boolean canResume() {
+		if (resumeGame() != null) {
+			System.out.println(("ok"));
+			return true;
+		}
+		System.out.println("no");
 		return false;
 	}
 
 	/*
-	 * 0 - current word object 1 -  words object 2 - scoreboard
+	 * 0 - current word object, 1 - words object, 2 - scoreboard
 	 */
 	@SuppressWarnings("unchecked")
 	public SinglyLinkedList<Object> resumeGame() {
@@ -47,19 +52,21 @@ public class HangmanGame extends HangmanFrame {
 
 			Object words = gameData.getElementAt(1);
 			gameData.add(words);
-			// TODO Add scoreboard;
+			// TODO Add scoreboard
 			in.close();
 			fileIn.close();
 		} catch (IOException i) {
 			System.err.println("There was a problem when trying to read-in your game file...");
+			return null;
 		} catch (ClassNotFoundException c) {
 			System.err.println("There was a problem finding your game file...");
+			return null;
 		}
 		return gameData;
 	}
 
 	/*
-	 * 0 - current word object 1 -  words object 2 - scoreboard
+	 * 0 - current word object, 1 - words object, 2 - scoreboard
 	 */
 	public boolean saveGame(SinglyLinkedList<Object> gameData) {
 		try {
@@ -71,52 +78,28 @@ public class HangmanGame extends HangmanFrame {
 			System.out.println("\n\nSerialized data is saved in gameData.ser");
 			return true;
 		} catch (IOException i) {
-	         System.err.println("There was a problem saving your game...");
-	         return false;
-	    }
+			System.err.println("There was a problem saving your game...");
+			return false;
+		}
 	}
 
-//	public ArrayList<Object> resumeGame() {
-//		ArrayList<Object> gameData = null;
+//	public void updatePreviousNames() {
+//		String filePath = "./";
+//		File file = new File(filePath);
+//		FileWriter writer;
+//		
 //		try {
-//			FileInputStream fileIn = new FileInputStream("./gameData.ser");
-//			ObjectInputStream in = new ObjectInputStream(fileIn);
-//			gameData = (ArrayList<Object>) in.readObject();
-//
-//			DictionaryWordsRepo words = (DictionaryWordsRepo) gameData.get(0);
-//			gameData.add(words);
-//
-//			DictionaryWord word = (DictionaryWord) gameData.get(1);
-//			gameData.add(word);
-//			// TODO Add scoreboard;
-//			in.close();
-//			fileIn.close();
-//		} catch (IOException i) {
-//			System.err.println("There was a problem when trying to read-in your game file...");
-//		} catch (ClassNotFoundException c) {
-//			System.err.println("There was a problem finding your game file...");
-//		}
-//		return gameData;
-//	}
-
-//	public boolean saveGame(ArrayList<Object> gameData) {
-//		try {
-//			FileOutputStream fileOut = new FileOutputStream("./gameData.ser");
-//			ObjectOutputStream out = new ObjectOutputStream(fileOut);
-//			out.writeObject(gameData);
-//			out.close();
-//			fileOut.close();
-//			System.out.println("\n\nSerialized data is saved in gameData.ser");
-//			return true;
-//		} catch (IOException i) {
-//			System.err.println("There was a problem saving your game...");
-//			return false;
+//			writer = new FileWriter(file);
+//			
+//			for (int i = 0; i < previousNames.length; i++) {
+//				writer.write(previousNames[i]);
+//			}
+//			writer.flush();
+//			writer.close();
+//		}catch (IOException e) {
+//			System.out.println("Exception: " + e);
 //		}
 //	}
-
-	public void saveNewName(String newName) {
-		previousNames.add(newName);
-	}
 
 	public boolean returnToMainMenu() {
 		return false;
