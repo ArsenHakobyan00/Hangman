@@ -48,7 +48,10 @@ public class HangmanFrame extends JFrame {
 
 	private static DictionaryWordsRepo words;
 	private static DictionaryWord word;
+	private SinglyLinkedList<Character> guessedLetters;
+	private SinglyLinkedList<Character> wrongGuesses;
 	private static HangmanGame game;
+	private	boolean newGame = false;
 	private static Scoreboard scoreboard;
 	private static SinglyLinkedList<Object> gameData;
 	private static SinglyLinkedList<Object> savedData;
@@ -62,30 +65,29 @@ public class HangmanFrame extends JFrame {
 	private JMenuItem menuItemExitGame;
 	private JMenuItem menuItemScoreboard;
 	private JFormattedTextField txtFieldUserName;
-	private JLabel lblOr;
+	private JFormattedTextField lettersSpace;
 	private JFormattedTextField enterLetterTxtField;
+	private JTextArea txtWrongGuesses;
+	private JLabel lblOr;
 	private JButton btnNewButton;
 	private JButton btnEnter;
 	private JPanel lettersSpacePanel;
-	private JTextArea lettersSpace;
 
 	public static void main(String[] args) {
 
 		// Start Game
-		game = new HangmanGame();
+
 		HangmanFrame frame = new HangmanFrame();
 		frame.setVisible(true);
 
-		// if user clicks on save
-//		gameData = new SinglyLinkedList<Object>();
-//		words = new DictionaryWordsRepo();
-//
-//		word = new DictionaryWord(words.sendRandomWord());
-//		word.printLists();
+		word.printLists();
 //		System.out.println("\n\n0 - " + words + "\n1 - " + word);
-//		gameData.add(words);
-//		gameData.add(word);
-//
+		gameData.add(words);
+		gameData.add(word);
+		
+		while(!newGame) {
+			// TODO Figure out how to loop through the game 
+		}
 //		System.out.println("\n\n0 - " + gameData.getElementAt(0) + "\n1 - " + gameData.getElementAt(1));
 //
 //		game.saveGame(gameData);
@@ -97,6 +99,12 @@ public class HangmanFrame extends JFrame {
 	}
 
 	public HangmanFrame() {
+		game = new HangmanGame();
+		gameData = new SinglyLinkedList<Object>();
+		words = new DictionaryWordsRepo();
+		word = new DictionaryWord(words.sendRandomWord());
+		guessedLetters = word.getGuessedLetters();
+		wrongGuesses = word.getWrongGuesses();
 		init();
 	}
 
@@ -116,9 +124,10 @@ public class HangmanFrame extends JFrame {
 		contentPane.add(layeredPane);
 
 //		String[] previousNames = game.getPreviousNames();
-		String[] previousNames = { "", "Arsen", "Diana" };// TODO Use getPreviousNames here;
+		String[] previousNames = { "", };// TODO Use getPreviousNames here;
 
 		newGamePanel = new JPanel();
+		newGamePanel.setBackground(Color.ORANGE);
 		layeredPane.setLayer(newGamePanel, 0);
 		newGamePanel.setBounds(0, 0, 1048, 670);
 		layeredPane.add(newGamePanel);
@@ -162,10 +171,10 @@ public class HangmanFrame extends JFrame {
 
 		enterLetterTxtField = new JFormattedTextField();
 		enterLetterTxtField.addKeyListener(new KeyAdapter() {
-		    public void keyTyped(KeyEvent e) { 
-		        if (enterLetterTxtField.getText().length() >= 1 ) // limit character input to 1 character
-		            e.consume(); 
-		    }  
+			public void keyTyped(KeyEvent e) {
+				if (enterLetterTxtField.getText().length() >= 1) // limit character input to 1 character
+					e.consume();
+			}
 		});
 		enterLetterTxtField.setBounds(52, 26, 157, 58);
 		padPanel.add(enterLetterTxtField);
@@ -173,6 +182,62 @@ public class HangmanFrame extends JFrame {
 		enterLetterTxtField.setFont(new Font("Arial", Font.PLAIN, 20));
 
 		btnEnter = new JButton("Enter Letter");
+		btnEnter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String input = enterLetterTxtField.getText() + " ";
+				char inputChar = input.charAt(0);
+				enterLetterTxtField.setText("");
+
+				if (Character.isLetter(inputChar)) {
+					boolean guessedLettersDuplicate = isDuplicate(inputChar, guessedLetters);
+					boolean wrongGuessedDuplicate = isDuplicate(inputChar, wrongGuesses);
+
+					if (!guessedLettersDuplicate) {
+						boolean isCorrect = word.guessLetter(inputChar);
+						if (isCorrect) {
+							displayGuessedLetters();
+						} else {
+							if (!wrongGuessedDuplicate) {
+								changeHangmanImage();
+							}
+							displayWrongGuesses();
+						}
+					}
+				} else {
+					if (!Character.isSpaceChar(inputChar)) {
+						String message = inputChar + " is not a letter";
+						JOptionPane.showMessageDialog(newGamePanel, message, "Wrong input", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				if (word.isGameOver()) {
+					if (word.isWin()) {
+						int choice = JOptionPane.showConfirmDialog(newGamePanel, "Congratualtions!!! You won!\n Would you like to play another game?", "You Won", JOptionPane.YES_NO_OPTION);
+						if (choice == 0) {
+							init();
+						} else {
+							
+						}
+						
+					}
+				}
+			}
+
+			private boolean isDuplicate(char inputChar, SinglyLinkedList<Character> list) {
+				if (list.getLength() != 0) {
+					int i = 0;
+					while (i < list.getLength()) {
+						if (inputChar == list.getElementAt(i)) {
+							JOptionPane.showMessageDialog(newGamePanel, "Letter already guessed", "Duplicate", JOptionPane.WARNING_MESSAGE);
+							return true;
+						}
+						i++;
+					}
+					return false;
+				} else {
+					return false;
+				}
+			}
+		});
 		btnEnter.setForeground(Color.WHITE);
 		btnEnter.setBackground(Color.BLACK);
 		btnEnter.setBounds(52, 108, 157, 47);
@@ -180,39 +245,48 @@ public class HangmanFrame extends JFrame {
 		btnEnter.setFont(new Font("Arial", Font.PLAIN, 20));
 
 		btnNewButton = new JButton("Hint");
-		btnNewButton.setBounds(237, 33, 72, 47);
+		btnNewButton.setForeground(Color.WHITE);
+		btnNewButton.setBounds(232, 26, 83, 58);
 		padPanel.add(btnNewButton);
 		btnNewButton.setBackground(Color.RED);
 		btnNewButton.setFont(new Font("Arial", Font.PLAIN, 20));
 
 		JPanel wrongGuessesPanel = new JPanel();
-		wrongGuessesPanel.setBorder(new MatteBorder(5, 5, 5, 5, (Color) new Color(0, 0, 0)));
+		wrongGuessesPanel.setBorder(new MatteBorder(3, 3, 3, 3, (Color) new Color(0, 0, 0)));
 		wrongGuessesPanel.setBackground(Color.ORANGE);
-		wrongGuessesPanel.setBounds(773, 434, 207, 218);
+		wrongGuessesPanel.setBounds(752, 463, 256, 181);
 		newGamePanel.add(wrongGuessesPanel);
 		wrongGuessesPanel.setLayout(null);
 
-		JTextArea txtWrongGuesses = new JTextArea();
-		txtWrongGuesses.setBounds(17, 16, 172, 170);
+		txtWrongGuesses = new JTextArea();
+		txtWrongGuesses.setWrapStyleWord(true);
+		txtWrongGuesses.setBounds(12, 38, 232, 131);
 		wrongGuessesPanel.add(txtWrongGuesses);
 		txtWrongGuesses.setForeground(Color.BLACK);
 		txtWrongGuesses.setLineWrap(true);
 		txtWrongGuesses.setDropMode(DropMode.INSERT);
 		txtWrongGuesses.setBackground(Color.ORANGE);
-		txtWrongGuesses.setText("Guessed Letters:\n\n");
 		txtWrongGuesses.setTabSize(0);
 		txtWrongGuesses.setFont(new Font("Arial", Font.PLAIN, 20));
 		txtWrongGuesses.setEditable(false);
-		
+
+		JLabel lblWrongGuesses = new JLabel("Wrong Guesses: ");
+		lblWrongGuesses.setBounds(12, 5, 165, 37);
+		wrongGuessesPanel.add(lblWrongGuesses);
+		lblWrongGuesses.setFont(new Font("Arial", Font.BOLD, 20));
+
 		lettersSpacePanel = new JPanel();
 		lettersSpacePanel.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)));
-		lettersSpacePanel.setBounds(398, 175, 510, 186);
+		lettersSpacePanel.setBounds(451, 231, 510, 106);
 		newGamePanel.add(lettersSpacePanel);
 		lettersSpacePanel.setLayout(null);
-		
-		lettersSpace = new JTextArea();
+
+		lettersSpace = new JFormattedTextField();
 		lettersSpace.setEditable(false);
-		lettersSpace.setBounds(22, 55, 470, 67);
+		lettersSpace.setBounds(29, 24, 451, 58);
+		lettersSpace.setHorizontalAlignment(SwingConstants.CENTER);
+		lettersSpace.setFont(new Font("Arial", Font.PLAIN, 30));
+		displayGuessedLetters();
 		lettersSpacePanel.add(lettersSpace);
 
 		welcomePanel = new JPanel();
@@ -344,15 +418,21 @@ public class HangmanFrame extends JFrame {
 	}
 
 	public void displayGuessedLetters() {
-
+		guessedLetters = word.getGuessedLetters();
+		String letters = "";
+		for (int i = 0; i < guessedLetters.getLength(); i++) {
+			letters += guessedLetters.getElementAt(i) + "  ";
+		}
+		lettersSpace.setText(letters);
 	}
 
-	public void updateGuessedLetters() {
-
-	}
-
-	public void updateWrongGuesses() {
-
+	public void displayWrongGuesses() {
+		wrongGuesses = word.getWrongGuesses();
+		String wrongLetters = "";
+		for (int i = 0; i < wrongGuesses.getLength(); i++) {
+			wrongLetters += wrongGuesses.getElementAt(i) + ", ";
+		}
+		txtWrongGuesses.setText(wrongLetters);
 	}
 
 	public void displayHint() {

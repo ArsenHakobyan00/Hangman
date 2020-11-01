@@ -19,8 +19,8 @@ public class DictionaryWordsRepo implements Serializable {
 	}
 	
 	public boolean addWordToList(String word) {
-		if (word.length() > 2) {
-			dictionaryWords.add(word);			
+		if (word.length() > 2 && word.length() <= 15) {
+			dictionaryWords.add(word.toLowerCase());			
 			return true;
 		}
 		return false;
@@ -40,7 +40,9 @@ public class DictionaryWordsRepo implements Serializable {
 	public String sendRandomWord() {
 		Random rand = new Random(); 
 		int randomItemNumber = rand.nextInt(dictionaryWords.getLength());
-		return dictionaryWords.getElementAt(randomItemNumber);
+		String randomWord = dictionaryWords.getElementAt(randomItemNumber);
+		dictionaryWords.remove(randomItemNumber);
+		return randomWord;
 	}
 	
 	public boolean readFile() {

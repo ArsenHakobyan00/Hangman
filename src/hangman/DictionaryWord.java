@@ -44,11 +44,11 @@ public class DictionaryWord implements Serializable {
 
 	// Temporary
 	public void printLists() {
-		System.out.println("Guessed Letters: ");
-		for (int i = 0; i < solutionInLetters.getLength(); i++) {
-			System.out.print(guessedLetters.getElementAt(i) + " ");
-		}
-		System.out.println("\n");
+//		System.out.println("Guessed Letters: ");
+//		for (int i = 0; i < solutionInLetters.getLength(); i++) {
+//			System.out.print(guessedLetters.getElementAt(i) + " ");
+//		}
+//		System.out.println("\n");
 		System.out.println("Solution In Letters");
 		for (int i = 0; i < solutionInLetters.getLength(); i++) {
 			System.out.print(solutionInLetters.getElementAt(i) + " ");
@@ -87,26 +87,51 @@ public class DictionaryWord implements Serializable {
 	}
 
 	public boolean guessLetter(char letter) {
+		letter = Character.toLowerCase(letter);
 		if (Character.isLetter(letter)) {
 			int i = 0;
-			int done = 0;
+//			int done = 0;
 			char current;
-			while (i < solutionInLetters.getLength()) {
-				current = solutionInLetters.getElementAt(i);
-				if (letter == current) {
-					guessedLetters.add(current, i);
-					done++;
-				} else {
-					wrongGuesses.add(current);
+			if (solution.indexOf(letter) != -1) {
+				while (i < solutionInLetters.getLength()) {
+					current = solutionInLetters.getElementAt(i);
+					if (letter == current) {
+						guessedLetters.remove(i);
+						guessedLetters.add(current, i);
+//						done++;
+					}
+					i++;
+				}
+			} else {
+				addWrongGuess(letter);
+				return false;
+			}
+			return true;
+
+//			if (done == 0)
+//				return false;
+//			else
+//				return true;
+		}
+		return false;
+	}
+
+	public void addWrongGuess(char letter) {
+		if (wrongGuesses.getLength() != 0) {
+			int i = 0;
+			int duplicates = 0;
+			while (i < wrongGuesses.getLength()) {
+				if (letter == wrongGuesses.getElementAt(i)) {
+					duplicates++;
 				}
 				i++;
 			}
-			if (done == 0)
-				return false;
-			else
-				return true;
+			if (duplicates == 0) { 
+				wrongGuesses.add(letter);
+			}
+		} else {
+			wrongGuesses.add(letter);
 		}
-		return false;
 	}
 
 	public boolean hasEmptySlots() {
