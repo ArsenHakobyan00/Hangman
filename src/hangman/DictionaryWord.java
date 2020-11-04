@@ -13,7 +13,7 @@ public class DictionaryWord implements Serializable {
 	private int hintsAvailable;
 
 	public DictionaryWord() {
-		solution = "unknown";
+		solution = "unk	wn";
 		guessedLetters = null;
 		solutionInLetters = null;
 		wrongGuesses = null;
