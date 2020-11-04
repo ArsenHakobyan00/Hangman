@@ -10,6 +10,7 @@ public class DictionaryWord implements Serializable {
 	private SinglyLinkedList<Character> solutionInLetters;
 	private SinglyLinkedList<Character> wrongGuesses;
 	private int numberOfMistakes;
+	private int hintsAvailable;
 
 	public DictionaryWord() {
 		solution = "unknown";
@@ -17,6 +18,7 @@ public class DictionaryWord implements Serializable {
 		solutionInLetters = null;
 		wrongGuesses = null;
 		numberOfMistakes = 0;
+		hintsAvailable = 1;
 	}
 
 	public DictionaryWord(String randomWord) {
@@ -26,8 +28,8 @@ public class DictionaryWord implements Serializable {
 		wrongGuesses = new SinglyLinkedList<Character>();
 		toChars(solution);
 		hideSolution(solution);
-
 		numberOfMistakes = 0;
+		hintsAvailable = 1;
 	}
 
 	public SinglyLinkedList<Character> getGuessedLetters() {
@@ -42,21 +44,10 @@ public class DictionaryWord implements Serializable {
 		return wrongGuesses;
 	}
 
-	// Temporary
-	public void printLists() {
-//		System.out.println("Guessed Letters: ");
-//		for (int i = 0; i < solutionInLetters.getLength(); i++) {
-//			System.out.print(guessedLetters.getElementAt(i) + " ");
-//		}
-//		System.out.println("\n");
-		System.out.println("Solution In Letters");
-		for (int i = 0; i < solutionInLetters.getLength(); i++) {
-			System.out.print(solutionInLetters.getElementAt(i) + " ");
-		}
-//		System.out.println("\n");
-//		System.out.println(solution);
+	public int getHintsAvailable() {
+		return hintsAvailable;
 	}
-
+	
 	public int getNumberOfMistakes() {
 		return numberOfMistakes;
 	}
@@ -90,7 +81,6 @@ public class DictionaryWord implements Serializable {
 		letter = Character.toLowerCase(letter);
 		if (Character.isLetter(letter)) {
 			int i = 0;
-//			int done = 0;
 			char current;
 			if (solution.indexOf(letter) != -1) {
 				while (i < solutionInLetters.getLength()) {
@@ -98,20 +88,15 @@ public class DictionaryWord implements Serializable {
 					if (letter == current) {
 						guessedLetters.remove(i);
 						guessedLetters.add(current, i);
-//						done++;
 					}
 					i++;
 				}
 			} else {
 				addWrongGuess(letter);
+				numberOfMistakes++;
 				return false;
 			}
 			return true;
-
-//			if (done == 0)
-//				return false;
-//			else
-//				return true;
 		}
 		return false;
 	}
@@ -146,7 +131,7 @@ public class DictionaryWord implements Serializable {
 	}
 
 	public boolean hint() {
-		if (hasEmptySlots() == true) {
+		if (hasEmptySlots() == true && hintsAvailable != 0) {
 			// Create a list with all the indices with '_'
 			SinglyLinkedList<Integer> emptySlotIndices = new SinglyLinkedList<Integer>();
 			int i = 0;
@@ -156,13 +141,20 @@ public class DictionaryWord implements Serializable {
 				}
 				i++;
 			}
+			
 			// Random Index of an empty slot
 			Random rand = new Random();
 			int randomLetterIndex = rand.nextInt(emptySlotIndices.getLength());
-			char randomLetter = solutionInLetters.getElementAt(randomLetterIndex);
-
+			int emptySlotIndex = emptySlotIndices.getElementAt(randomLetterIndex);
+			char randomLetter = solutionInLetters.getElementAt(emptySlotIndex);
+			
 			// Reveal the letter
 			guessLetter(randomLetter);
+			
+			// Decrease hints available 
+			hintsAvailable--;
+			numberOfMistakes++;
+			
 			return true;
 		}
 		return false;

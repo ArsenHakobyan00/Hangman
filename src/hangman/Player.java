@@ -61,16 +61,6 @@ public class Player implements Serializable {
 
 	public void loss() {
 		this.gamesPlayed++;
-		this.gamesWon++;
+		this.gamesLost++;
 	}
-
-//	public boolean hasValidName() {
-//		int i = 0;
-//		while(i < playerName.length()) {
-//			if (!Character.isLetter(playerName.charAt(i))) return false;
-//			i++;
-//			
-//		}
-//		return true;
-//	}
 }
